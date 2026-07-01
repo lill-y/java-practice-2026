@@ -1,6 +1,7 @@
 package ru.itis.shop.user.api;
 
 import ru.itis.shop.user.application.UserService;
+import ru.itis.shop.user.domain.User;
 
 import java.util.Scanner;
 
@@ -27,9 +28,14 @@ public class UserConsoleOperations {
             case "2": {
                 signIn();
             }
+            break;
             case "3":{
                 findById();
-            } break;
+            }
+            break;
+            case "4":{
+                changeDescription();
+            }
             break;
             case "0": {
                 System.exit(0);
@@ -41,6 +47,7 @@ public class UserConsoleOperations {
         System.out.println("1. Регистрация пользователя");
         System.out.println("2. Вход в систему");
         System.out.println("3. Найти пользователя по id");
+        System.out.println("4. Изменить описание");
         System.out.println("0. Выход");
     }
 
@@ -75,8 +82,21 @@ public class UserConsoleOperations {
         System.out.println("Поиск пользователя по id");
         System.out.println("Введите id:");
         String id = scanner.nextLine();
-        User user = userRepository.findById(id);
+        User user = userService.findById(id);
         System.out.println(user.toString());
+    }
+
+    private void changeDescription() {
+        System.out.println("Изменяем описание профиля");
+        System.out.println("Введите email:");
+        String email = scanner.nextLine();
+        System.out.println("Введите новое описание:");
+        String newDescription = scanner.nextLine();
+        if (userService.changeDescription(email, newDescription)){
+            System.out.println("Описание профиля успешно обновлено");
+        } else {
+            System.out.println("Неверный email");
+        }
     }
 
 }

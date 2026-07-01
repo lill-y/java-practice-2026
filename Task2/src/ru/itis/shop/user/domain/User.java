@@ -53,4 +53,11 @@ public class User {
     public void setProfileDescription(String profileDescription) {
         this.profileDescription = profileDescription;
     }
+
+    @Override
+    public String toString() {
+        return "id='" + id + '\'' +
+                ", email='" + email + '\'' +
+                ", profileDescription='" + profileDescription + '\'';
+    }
 }

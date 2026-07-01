@@ -4,8 +4,7 @@ import ru.itis.shop.user.domain.User;
 import ru.itis.shop.user.repository.UserRepository;
 
 import java.io.*;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class UserFileRepository implements UserRepository {
 
@@ -55,14 +54,13 @@ public class UserFileRepository implements UserRepository {
     }
 
     @Override
-    public User findById(String id) {
+    public Optional<User> findById(String id) {
         try(BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line = reader.readLine();
             while (line != null) {
-                var userData = line.split("\\|");
-                if (id.equals(userData[0])) {
-                    User user = new User(id, userData[1], userData[2], userData[3]);
-                    return user;
+                User user = userMapper.fromLine(line);
+                if (user.getId().equals(id)) {
+                    return Optional.of(user);
                 }
                 line = reader.readLine();
             }
@@ -73,6 +71,31 @@ public class UserFileRepository implements UserRepository {
             System.err.println("Error reading file");
             throw new RuntimeException(e);
         }
-        return null;
+        return Optional.empty();
+    }
+
+    public void update(User userChange) {
+        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line = reader.readLine();
+            List<String> updatedLines = new ArrayList<>();
+            while (line != null) {
+                User user = userMapper.fromLine(line);
+                if (user.getId().equals(userChange.getId())) {
+                    updatedLines.add(userMapper.toLine(userChange));
+                } else {
+                    updatedLines.add(line);
+                }
+                line = reader.readLine();
+            }
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+                for (String user : updatedLines) {
+                    writer.write(user);
+                    writer.newLine();
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file");
+            throw new RuntimeException(e);
+        }
     }
 }
