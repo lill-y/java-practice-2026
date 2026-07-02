@@ -1,2 +1,8 @@
-94d8d1f2-5a63-4645-b8a6-3bb7cec7fe4f|demi7@gmail.com|fhhvda32|абеба
-508a907f-b35a-4281-8427-1206e79af5b1|dmitry3@gmail.com|apendics|Caloed
+create table product(
+    id serial unique,
+    name char(42) not null,
+    price integer check (price >= 0)
+);
+
+insert into product(name, price) values ('Milk', 98);
+insert into product(name, price) values ('Bread', 71);
