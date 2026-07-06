@@ -37,6 +37,10 @@ public class UserConsoleOperations {
                 changeDescription();
             }
             break;
+            case "5": {
+                findAll();
+            }
+            break;
             case "0": {
                 System.exit(0);
             }
@@ -99,4 +103,7 @@ public class UserConsoleOperations {
         }
     }
 
+    private void findAll() {
+        userService.findAll();
+    }
 }

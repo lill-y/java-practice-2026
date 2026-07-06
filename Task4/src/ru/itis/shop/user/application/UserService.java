@@ -3,6 +3,7 @@ package ru.itis.shop.user.application;
 import ru.itis.shop.user.domain.User;
 import ru.itis.shop.user.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public class UserService {
@@ -42,5 +43,12 @@ public class UserService {
             userRepository.update(user);
             return true;
         } else return false;
+    }
+
+    public void findAll() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            System.out.println(user.getId() + " | " + user.getEmail());
+        }
     }
 }

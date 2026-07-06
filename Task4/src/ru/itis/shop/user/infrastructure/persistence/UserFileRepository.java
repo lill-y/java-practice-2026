@@ -98,4 +98,9 @@ public class UserFileRepository implements UserRepository {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<User> findAll() {
+        return List.of();
+    }
 }
