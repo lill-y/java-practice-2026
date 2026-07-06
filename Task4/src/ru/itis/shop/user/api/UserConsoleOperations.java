@@ -52,6 +52,7 @@ public class UserConsoleOperations {
         System.out.println("2. Вход в систему");
         System.out.println("3. Найти пользователя по id");
         System.out.println("4. Изменить описание");
+        System.out.println("5. Показать всех пользователей");
         System.out.println("0. Выход");
     }
 
