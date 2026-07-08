@@ -6,10 +6,7 @@ import ru.itis.shop.user.repository.UserRepository;
 
 import javax.sql.ConnectionEvent;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -59,6 +56,34 @@ public class UserRepositoryJdbcImpl implements UserRepository {
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
+        return users;
+    }
+
+    @Override
+    public List<User> findAllByProfileDescription(String profileDescription) {
+        List<User> users = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection()) {
+
+            String sql = "select * from account where profile_description = ?";
+
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+                statement.setString(1, profileDescription);
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+
+                    while (resultSet.next()) {
+                        users.add(userRowMapper.mapRow(resultSet));
+                    }
+
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+
         return users;
     }
 }

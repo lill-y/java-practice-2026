@@ -1,7 +1,9 @@
 package ru.itis.shop.user.api;
 
 import ru.itis.shop.user.application.UserService;
+import ru.itis.shop.user.domain.User;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class UserConsoleOperations {
@@ -28,6 +30,13 @@ public class UserConsoleOperations {
                 signIn();
             }
             break;
+            case "3": {
+            }
+            break;
+            case "4": {
+                findAllByProfileDescription();
+            }
+            break;
             case "0": {
                 System.exit(0);
             }
@@ -38,6 +47,7 @@ public class UserConsoleOperations {
         System.out.println("1. Регистрация пользователя");
         System.out.println("2. Вход в систему");
         System.out.println("3. Найти пользователя по id");
+        System.out.println("4. Показать информацию о пользователях с заданным profileDescription");
         System.out.println("0. Выход");
     }
 
@@ -70,6 +80,13 @@ public class UserConsoleOperations {
         }
     }
 
+    private void findAllByProfileDescription() {
+        System.out.println("Введите описание профиля:");
+        String description = scanner.nextLine();
 
+        List<User> users = userService.findAllByProfileDescription(description);
+
+        users.forEach(System.out::println);
+    }
 
 }

@@ -3,6 +3,7 @@ package ru.itis.shop.user.application;
 import ru.itis.shop.user.domain.User;
 import ru.itis.shop.user.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public class UserService {
@@ -24,5 +25,9 @@ public class UserService {
         if (userOptional.isPresent()) {
             return userOptional.get().getPassword().equals(password);
         } else return false;
+    }
+
+    public List<User> findAllByProfileDescription(String profileDescription) {
+        return userRepository.findAllByProfileDescription(profileDescription);
     }
 }
