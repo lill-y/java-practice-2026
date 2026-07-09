@@ -1,5 +1,6 @@
 package ru.itis.shop.user.application;
 
+import ru.itis.shop.user.api.dto.UserDto;
 import ru.itis.shop.user.domain.User;
 import ru.itis.shop.user.repository.UserRepository;
 
@@ -12,6 +13,12 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public UserDto getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(RuntimeException::new);
+
+        return new UserDto(user.getId(), user.getEmail(), user.getProfileDescription());
     }
 
     public void signUp(String name, String email, String password, String profileDescription) {
@@ -27,7 +34,56 @@ public class UserService {
         } else return false;
     }
 
-    public List<User> findAllByProfileDescription(String profileDescription) {
-        return userRepository.findAllByProfileDescription(profileDescription);
+    public List<UserDto> findAllByProfileDescription(String profileDescription) {
+
+        List<User> users = userRepository.findAllByProfileDescription(profileDescription);
+
+        return users.stream()
+                .map(user -> new UserDto(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getProfileDescription()
+                ))
+                .toList();
+    }
+
+    public UserDto findById(Integer id) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(RuntimeException::new);
+
+        return new UserDto(
+                user.getId(),
+                user.getEmail(),
+                user.getProfileDescription()
+        );
+    }
+
+    public boolean updateDescription(String email, String description) {
+
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isEmpty()) {
+            return false;
+        }
+
+        User user = userOptional.get();
+        user.setProfileDescription(description);
+
+        userRepository.update(user);
+
+        return true;
+    }
+
+    public List<UserDto> findAll() {
+
+        return userRepository.findAll()
+                .stream()
+                .map(user -> new UserDto(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getProfileDescription()
+                ))
+                .toList();
     }
 }

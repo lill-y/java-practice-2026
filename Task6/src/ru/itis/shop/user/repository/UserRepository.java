@@ -15,4 +15,6 @@ public interface UserRepository {
 
     List<User> findAll();
     List<User> findAllByProfileDescription(String profileDescription);
+
+    void update(User user);
 }
